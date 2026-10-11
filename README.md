@@ -1,5 +1,5 @@
 ﻿# MCP-Powered API Test Automation & AI Data Generation Framework
-
+[![API Test Automation](https://github.com/adriijaaaa/mcp-api-test-automation/actions/workflows/tests.yml/badge.svg)](https://github.com/adriijaaaa/mcp-api-test-automation/actions/workflows/tests.yml)
 An API testing framework combining rule-based testing, local AI-assisted test generation, boundary-value analysis, and Model Context Protocol (MCP) tools.
 
 ## Features
@@ -104,3 +104,17 @@ tests/        Additional tests
 The framework combines OpenAPI-based endpoint discovery, rule-based API testing, AI-assisted test data generation using local Ollama, MCP tool integration, and consolidated test reporting.
 
 ![MCP-Powered API Test Automation Architecture](docs/images/architecture.png)
+
+## Test Results
+
+The framework has been validated using automated API tests and standalone test-generation workflows.
+
+| Test Suite | Result |
+|---|---:|
+| Pytest automated tests | 10/10 passed |
+| Rule-based test suite | 5/5 passed |
+| AI-generated test suite | 3/3 passed |
+| Boundary test suite | 14/14 passed |
+| **Standalone test workflows** | **22/22 passed** |
+
+The pytest suite runs in GitHub Actions on pushes and pull requests. The standalone results are from separate local test runs.
