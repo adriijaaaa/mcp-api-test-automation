@@ -1,0 +1,56 @@
+[
+  {
+    "name": "POST /products - valid payload",
+    "method": "POST",
+    "path": "/products",
+    "payload": {
+      "name": "xx",
+      "price": 1,
+      "stock": 0
+    },
+    "expected_status": 201
+  },
+  {
+    "name": "POST /products - missing name",
+    "method": "POST",
+    "path": "/products",
+    "payload": {
+      "price": 1,
+      "stock": 0
+    },
+    "expected_status": 422
+  },
+  {
+    "name": "POST /products - invalid name",
+    "method": "POST",
+    "path": "/products",
+    "payload": {
+      "name": "",
+      "price": 1,
+      "stock": 0
+    },
+    "expected_status": 422
+  },
+  {
+    "name": "POST /products - invalid price",
+    "method": "POST",
+    "path": "/products",
+    "payload": {
+      "name": "xx",
+      "price": 0.0,
+      "stock": 0
+    },
+    "expected_status": 422
+  },
+  {
+    "name": "POST /products - invalid stock",
+    "method": "POST",
+    "path": "/products",
+    "payload": {
+      "name": "xx",
+      "price": 1,
+      "stock": -1
+    },
+    "expected_status": 422
+  }
+]

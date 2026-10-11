@@ -1,0 +1,371 @@
+{
+  "generated_at": "2026-10-11T11:20:10.898554+00:00",
+  "api_url": "http://127.0.0.1:8000",
+  "total": 5,
+  "passed": 5,
+  "failed": 0,
+  "pass_rate_percent": 100.0,
+  "results": [
+    {
+      "name": "POST /products - valid payload",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "xx",
+        "price": 1,
+        "stock": 0
+      },
+      "expected_status": 201,
+      "actual_status": 201,
+      "duration_ms": 3.62,
+      "response_body": {
+        "id": 14,
+        "name": "xx",
+        "price": 1.0,
+        "stock": 0
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 201,
+          "actual": 201
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "created_product_is_object",
+          "passed": true,
+          "expected": "JSON object",
+          "actual": "dict"
+        },
+        {
+          "check": "created_product_has_id",
+          "passed": true,
+          "expected": "Integer product ID",
+          "actual": 14
+        },
+        {
+          "check": "created_product_matches_payload",
+          "passed": true,
+          "expected": {
+            "name": "xx",
+            "price": 1,
+            "stock": 0
+          },
+          "actual": {
+            "name": "xx",
+            "price": 1.0,
+            "stock": 0
+          }
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:10.887290+00:00"
+    },
+    {
+      "name": "POST /products - missing name",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "price": 1,
+        "stock": 0
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.83,
+      "response_body": {
+        "detail": [
+          {
+            "type": "missing",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Field required",
+            "input": {
+              "price": 1,
+              "stock": 0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "missing",
+              "loc": [
+                "body",
+                "name"
+              ],
+              "msg": "Field required",
+              "input": {
+                "price": 1,
+                "stock": 0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "name"
+          ],
+          "actual": [
+            "name"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:10.891738+00:00"
+    },
+    {
+      "name": "POST /products - invalid name",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "",
+        "price": 1,
+        "stock": 0
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.31,
+      "response_body": {
+        "detail": [
+          {
+            "type": "string_too_short",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should have at least 2 characters",
+            "input": "",
+            "ctx": {
+              "min_length": 2
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "string_too_short",
+              "loc": [
+                "body",
+                "name"
+              ],
+              "msg": "String should have at least 2 characters",
+              "input": "",
+              "ctx": {
+                "min_length": 2
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "name"
+          ],
+          "actual": [
+            "name"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:10.893873+00:00"
+    },
+    {
+      "name": "POST /products - invalid price",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "xx",
+        "price": 0.0,
+        "stock": 0
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.23,
+      "response_body": {
+        "detail": [
+          {
+            "type": "greater_than",
+            "loc": [
+              "body",
+              "price"
+            ],
+            "msg": "Input should be greater than 0",
+            "input": 0.0,
+            "ctx": {
+              "gt": 0.0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "greater_than",
+              "loc": [
+                "body",
+                "price"
+              ],
+              "msg": "Input should be greater than 0",
+              "input": 0.0,
+              "ctx": {
+                "gt": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "price"
+          ],
+          "actual": [
+            "price"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:10.895419+00:00"
+    },
+    {
+      "name": "POST /products - invalid stock",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "xx",
+        "price": 1,
+        "stock": -1
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.36,
+      "response_body": {
+        "detail": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "body",
+              "stock"
+            ],
+            "msg": "Input should be greater than or equal to 0",
+            "input": -1,
+            "ctx": {
+              "ge": 0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "greater_than_equal",
+              "loc": [
+                "body",
+                "stock"
+              ],
+              "msg": "Input should be greater than or equal to 0",
+              "input": -1,
+              "ctx": {
+                "ge": 0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "stock"
+          ],
+          "actual": [
+            "stock"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:10.896883+00:00"
+    }
+  ]
+}

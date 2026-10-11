@@ -1,0 +1,1564 @@
+{
+  "generated_at": "2026-10-11T11:20:22.261893+00:00",
+  "suite_count": 3,
+  "overall_status": "PASS",
+  "total": 22,
+  "passed": 22,
+  "failed": 0,
+  "pass_rate_percent": 100.0,
+  "suite_summaries": {
+    "rule_based": {
+      "source_report": "reports\\test_run_report.json",
+      "total": 5,
+      "passed": 5,
+      "failed": 0,
+      "pass_rate_percent": 100.0
+    },
+    "ai_assisted": {
+      "source_report": "reports\\ai_test_run_report.json",
+      "total": 3,
+      "passed": 3,
+      "failed": 0,
+      "pass_rate_percent": 100.0
+    },
+    "boundary_value": {
+      "source_report": "reports\\boundary_test_report.json",
+      "total": 14,
+      "passed": 14,
+      "failed": 0,
+      "pass_rate_percent": 100.0
+    }
+  },
+  "failures": [],
+  "results": [
+    {
+      "suite": "rule_based",
+      "name": "POST /products - valid payload",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "xx",
+        "price": 1,
+        "stock": 0
+      },
+      "expected_status": 201,
+      "actual_status": 201,
+      "duration_ms": 3.62,
+      "response_body": {
+        "id": 14,
+        "name": "xx",
+        "price": 1.0,
+        "stock": 0
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 201,
+          "actual": 201
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "created_product_is_object",
+          "passed": true,
+          "expected": "JSON object",
+          "actual": "dict"
+        },
+        {
+          "check": "created_product_has_id",
+          "passed": true,
+          "expected": "Integer product ID",
+          "actual": 14
+        },
+        {
+          "check": "created_product_matches_payload",
+          "passed": true,
+          "expected": {
+            "name": "xx",
+            "price": 1,
+            "stock": 0
+          },
+          "actual": {
+            "name": "xx",
+            "price": 1.0,
+            "stock": 0
+          }
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:10.887290+00:00"
+    },
+    {
+      "suite": "rule_based",
+      "name": "POST /products - missing name",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "price": 1,
+        "stock": 0
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.83,
+      "response_body": {
+        "detail": [
+          {
+            "type": "missing",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Field required",
+            "input": {
+              "price": 1,
+              "stock": 0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "missing",
+              "loc": [
+                "body",
+                "name"
+              ],
+              "msg": "Field required",
+              "input": {
+                "price": 1,
+                "stock": 0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "name"
+          ],
+          "actual": [
+            "name"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:10.891738+00:00"
+    },
+    {
+      "suite": "rule_based",
+      "name": "POST /products - invalid name",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "",
+        "price": 1,
+        "stock": 0
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.31,
+      "response_body": {
+        "detail": [
+          {
+            "type": "string_too_short",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should have at least 2 characters",
+            "input": "",
+            "ctx": {
+              "min_length": 2
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "string_too_short",
+              "loc": [
+                "body",
+                "name"
+              ],
+              "msg": "String should have at least 2 characters",
+              "input": "",
+              "ctx": {
+                "min_length": 2
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "name"
+          ],
+          "actual": [
+            "name"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:10.893873+00:00"
+    },
+    {
+      "suite": "rule_based",
+      "name": "POST /products - invalid price",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "xx",
+        "price": 0.0,
+        "stock": 0
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.23,
+      "response_body": {
+        "detail": [
+          {
+            "type": "greater_than",
+            "loc": [
+              "body",
+              "price"
+            ],
+            "msg": "Input should be greater than 0",
+            "input": 0.0,
+            "ctx": {
+              "gt": 0.0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "greater_than",
+              "loc": [
+                "body",
+                "price"
+              ],
+              "msg": "Input should be greater than 0",
+              "input": 0.0,
+              "ctx": {
+                "gt": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "price"
+          ],
+          "actual": [
+            "price"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:10.895419+00:00"
+    },
+    {
+      "suite": "rule_based",
+      "name": "POST /products - invalid stock",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "xx",
+        "price": 1,
+        "stock": -1
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.36,
+      "response_body": {
+        "detail": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "body",
+              "stock"
+            ],
+            "msg": "Input should be greater than or equal to 0",
+            "input": -1,
+            "ctx": {
+              "ge": 0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "greater_than_equal",
+              "loc": [
+                "body",
+                "stock"
+              ],
+              "msg": "Input should be greater than or equal to 0",
+              "input": -1,
+              "ctx": {
+                "ge": 0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "stock"
+          ],
+          "actual": [
+            "stock"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:10.896883+00:00"
+    },
+    {
+      "suite": "ai_assisted",
+      "test_name": "Name Below Minimum Length",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "A",
+        "price": 10,
+        "stock": 5
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 23.31,
+      "response_body": {
+        "detail": [
+          {
+            "type": "string_too_short",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should have at least 2 characters",
+            "input": "A",
+            "ctx": {
+              "min_length": 2
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "string_too_short",
+              "loc": [
+                "body",
+                "name"
+              ],
+              "msg": "String should have at least 2 characters",
+              "input": "A",
+              "ctx": {
+                "min_length": 2
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "name"
+          ],
+          "actual": [
+            "name"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.144102+00:00"
+    },
+    {
+      "suite": "ai_assisted",
+      "test_name": "Negative Product Price",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "Example",
+        "price": -1,
+        "stock": 5
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.72,
+      "response_body": {
+        "detail": [
+          {
+            "type": "greater_than",
+            "loc": [
+              "body",
+              "price"
+            ],
+            "msg": "Input should be greater than 0",
+            "input": -1,
+            "ctx": {
+              "gt": 0.0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "greater_than",
+              "loc": [
+                "body",
+                "price"
+              ],
+              "msg": "Input should be greater than 0",
+              "input": -1,
+              "ctx": {
+                "gt": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "price"
+          ],
+          "actual": [
+            "price"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.167813+00:00"
+    },
+    {
+      "suite": "ai_assisted",
+      "test_name": "Negative Product Stock",
+      "method": "POST",
+      "path": "/products",
+      "payload": {
+        "name": "Example",
+        "price": 10,
+        "stock": -1
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.86,
+      "response_body": {
+        "detail": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "body",
+              "stock"
+            ],
+            "msg": "Input should be greater than or equal to 0",
+            "input": -1,
+            "ctx": {
+              "ge": 0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "greater_than_equal",
+              "loc": [
+                "body",
+                "stock"
+              ],
+              "msg": "Input should be greater than or equal to 0",
+              "input": -1,
+              "ctx": {
+                "ge": 0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": [
+            "stock"
+          ],
+          "actual": [
+            "stock"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.170005+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Name: empty string",
+      "payload": {
+        "name": "",
+        "price": 10,
+        "stock": 5
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 19.2,
+      "response_body": {
+        "detail": [
+          {
+            "type": "string_too_short",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should have at least 2 characters",
+            "input": "",
+            "ctx": {
+              "min_length": 2
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "string_too_short",
+              "loc": [
+                "body",
+                "name"
+              ],
+              "msg": "String should have at least 2 characters",
+              "input": "",
+              "ctx": {
+                "min_length": 2
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": "name",
+          "actual": [
+            "name"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.198106+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Name: 1 character",
+      "payload": {
+        "name": "A",
+        "price": 10,
+        "stock": 5
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 2.38,
+      "response_body": {
+        "detail": [
+          {
+            "type": "string_too_short",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should have at least 2 characters",
+            "input": "A",
+            "ctx": {
+              "min_length": 2
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "string_too_short",
+              "loc": [
+                "body",
+                "name"
+              ],
+              "msg": "String should have at least 2 characters",
+              "input": "A",
+              "ctx": {
+                "min_length": 2
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": "name",
+          "actual": [
+            "name"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.217640+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Name: minimum valid length (2)",
+      "payload": {
+        "name": "AB",
+        "price": 10,
+        "stock": 5
+      },
+      "expected_status": 201,
+      "actual_status": 201,
+      "duration_ms": 1.95,
+      "response_body": {
+        "id": 15,
+        "name": "AB",
+        "price": 10.0,
+        "stock": 5
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 201,
+          "actual": 201
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "created_product_is_object",
+          "passed": true,
+          "expected": "JSON object",
+          "actual": "dict"
+        },
+        {
+          "check": "created_product_has_id",
+          "passed": true,
+          "expected": "Integer product ID",
+          "actual": 15
+        },
+        {
+          "check": "created_product_matches_payload",
+          "passed": true,
+          "expected": {
+            "name": "AB",
+            "price": 10,
+            "stock": 5
+          },
+          "actual": {
+            "name": "AB",
+            "price": 10.0,
+            "stock": 5
+          }
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.220295+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Name: maximum valid length (100)",
+      "payload": {
+        "name": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "price": 10,
+        "stock": 5
+      },
+      "expected_status": 201,
+      "actual_status": 201,
+      "duration_ms": 1.69,
+      "response_body": {
+        "id": 16,
+        "name": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "price": 10.0,
+        "stock": 5
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 201,
+          "actual": 201
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "created_product_is_object",
+          "passed": true,
+          "expected": "JSON object",
+          "actual": "dict"
+        },
+        {
+          "check": "created_product_has_id",
+          "passed": true,
+          "expected": "Integer product ID",
+          "actual": 16
+        },
+        {
+          "check": "created_product_matches_payload",
+          "passed": true,
+          "expected": {
+            "name": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+            "price": 10,
+            "stock": 5
+          },
+          "actual": {
+            "name": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+            "price": 10.0,
+            "stock": 5
+          }
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.222517+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Name: 1 over maximum (101)",
+      "payload": {
+        "name": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+        "price": 10,
+        "stock": 5
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.58,
+      "response_body": {
+        "detail": [
+          {
+            "type": "string_too_long",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "String should have at most 100 characters",
+            "input": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+            "ctx": {
+              "max_length": 100
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "string_too_long",
+              "loc": [
+                "body",
+                "name"
+              ],
+              "msg": "String should have at most 100 characters",
+              "input": "NNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN",
+              "ctx": {
+                "max_length": 100
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": "name",
+          "actual": [
+            "name"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.224429+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Price: negative",
+      "payload": {
+        "name": "Price Test",
+        "price": -1,
+        "stock": 5
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.31,
+      "response_body": {
+        "detail": [
+          {
+            "type": "greater_than",
+            "loc": [
+              "body",
+              "price"
+            ],
+            "msg": "Input should be greater than 0",
+            "input": -1,
+            "ctx": {
+              "gt": 0.0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "greater_than",
+              "loc": [
+                "body",
+                "price"
+              ],
+              "msg": "Input should be greater than 0",
+              "input": -1,
+              "ctx": {
+                "gt": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": "price",
+          "actual": [
+            "price"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.226206+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Price: zero",
+      "payload": {
+        "name": "Price Test",
+        "price": 0,
+        "stock": 5
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.41,
+      "response_body": {
+        "detail": [
+          {
+            "type": "greater_than",
+            "loc": [
+              "body",
+              "price"
+            ],
+            "msg": "Input should be greater than 0",
+            "input": 0,
+            "ctx": {
+              "gt": 0.0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "greater_than",
+              "loc": [
+                "body",
+                "price"
+              ],
+              "msg": "Input should be greater than 0",
+              "input": 0,
+              "ctx": {
+                "gt": 0.0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": "price",
+          "actual": [
+            "price"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.227703+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Price: positive",
+      "payload": {
+        "name": "Price Test",
+        "price": 0.01,
+        "stock": 5
+      },
+      "expected_status": 201,
+      "actual_status": 201,
+      "duration_ms": 1.5,
+      "response_body": {
+        "id": 17,
+        "name": "Price Test",
+        "price": 0.01,
+        "stock": 5
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 201,
+          "actual": 201
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "created_product_is_object",
+          "passed": true,
+          "expected": "JSON object",
+          "actual": "dict"
+        },
+        {
+          "check": "created_product_has_id",
+          "passed": true,
+          "expected": "Integer product ID",
+          "actual": 17
+        },
+        {
+          "check": "created_product_matches_payload",
+          "passed": true,
+          "expected": {
+            "name": "Price Test",
+            "price": 0.01,
+            "stock": 5
+          },
+          "actual": {
+            "name": "Price Test",
+            "price": 0.01,
+            "stock": 5
+          }
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.229304+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Stock: negative",
+      "payload": {
+        "name": "Stock Test",
+        "price": 10,
+        "stock": -1
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.38,
+      "response_body": {
+        "detail": [
+          {
+            "type": "greater_than_equal",
+            "loc": [
+              "body",
+              "stock"
+            ],
+            "msg": "Input should be greater than or equal to 0",
+            "input": -1,
+            "ctx": {
+              "ge": 0
+            }
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "greater_than_equal",
+              "loc": [
+                "body",
+                "stock"
+              ],
+              "msg": "Input should be greater than or equal to 0",
+              "input": -1,
+              "ctx": {
+                "ge": 0
+              }
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": "stock",
+          "actual": [
+            "stock"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.231010+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Stock: zero",
+      "payload": {
+        "name": "Stock Test",
+        "price": 10,
+        "stock": 0
+      },
+      "expected_status": 201,
+      "actual_status": 201,
+      "duration_ms": 5.47,
+      "response_body": {
+        "id": 18,
+        "name": "Stock Test",
+        "price": 10.0,
+        "stock": 0
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 201,
+          "actual": 201
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "created_product_is_object",
+          "passed": true,
+          "expected": "JSON object",
+          "actual": "dict"
+        },
+        {
+          "check": "created_product_has_id",
+          "passed": true,
+          "expected": "Integer product ID",
+          "actual": 18
+        },
+        {
+          "check": "created_product_matches_payload",
+          "passed": true,
+          "expected": {
+            "name": "Stock Test",
+            "price": 10,
+            "stock": 0
+          },
+          "actual": {
+            "name": "Stock Test",
+            "price": 10.0,
+            "stock": 0
+          }
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.232570+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Stock: positive integer",
+      "payload": {
+        "name": "Stock Test",
+        "price": 10,
+        "stock": 1
+      },
+      "expected_status": 201,
+      "actual_status": 201,
+      "duration_ms": 1.67,
+      "response_body": {
+        "id": 19,
+        "name": "Stock Test",
+        "price": 10.0,
+        "stock": 1
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 201,
+          "actual": 201
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "created_product_is_object",
+          "passed": true,
+          "expected": "JSON object",
+          "actual": "dict"
+        },
+        {
+          "check": "created_product_has_id",
+          "passed": true,
+          "expected": "Integer product ID",
+          "actual": 19
+        },
+        {
+          "check": "created_product_matches_payload",
+          "passed": true,
+          "expected": {
+            "name": "Stock Test",
+            "price": 10,
+            "stock": 1
+          },
+          "actual": {
+            "name": "Stock Test",
+            "price": 10.0,
+            "stock": 1
+          }
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.238241+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Price: non-numeric string",
+      "payload": {
+        "name": "Type Test",
+        "price": "abc",
+        "stock": 5
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.3,
+      "response_body": {
+        "detail": [
+          {
+            "type": "float_parsing",
+            "loc": [
+              "body",
+              "price"
+            ],
+            "msg": "Input should be a valid number, unable to parse string as a number",
+            "input": "abc"
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "float_parsing",
+              "loc": [
+                "body",
+                "price"
+              ],
+              "msg": "Input should be a valid number, unable to parse string as a number",
+              "input": "abc"
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": "price",
+          "actual": [
+            "price"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.240132+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Stock: fractional number",
+      "payload": {
+        "name": "Type Test",
+        "price": 10,
+        "stock": 1.5
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.24,
+      "response_body": {
+        "detail": [
+          {
+            "type": "int_from_float",
+            "loc": [
+              "body",
+              "stock"
+            ],
+            "msg": "Input should be a valid integer, got a number with a fractional part",
+            "input": 1.5
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "int_from_float",
+              "loc": [
+                "body",
+                "stock"
+              ],
+              "msg": "Input should be a valid integer, got a number with a fractional part",
+              "input": 1.5
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": "stock",
+          "actual": [
+            "stock"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.241637+00:00"
+    },
+    {
+      "suite": "boundary_value",
+      "name": "Name: integer instead of string",
+      "payload": {
+        "name": 123,
+        "price": 10,
+        "stock": 5
+      },
+      "expected_status": 422,
+      "actual_status": 422,
+      "duration_ms": 1.3,
+      "response_body": {
+        "detail": [
+          {
+            "type": "string_type",
+            "loc": [
+              "body",
+              "name"
+            ],
+            "msg": "Input should be a valid string",
+            "input": 123
+          }
+        ]
+      },
+      "checks": [
+        {
+          "check": "status_code",
+          "passed": true,
+          "expected": 422,
+          "actual": 422
+        },
+        {
+          "check": "response_is_json",
+          "passed": true,
+          "expected": "JSON response",
+          "actual": "JSON"
+        },
+        {
+          "check": "validation_error_details",
+          "passed": true,
+          "expected": "Non-empty detail list",
+          "actual": [
+            {
+              "type": "string_type",
+              "loc": [
+                "body",
+                "name"
+              ],
+              "msg": "Input should be a valid string",
+              "input": 123
+            }
+          ]
+        },
+        {
+          "check": "error_matches_invalid_field",
+          "passed": true,
+          "expected": "name",
+          "actual": [
+            "name"
+          ]
+        }
+      ],
+      "passed": true,
+      "error": null,
+      "executed_at": "2026-10-11T11:20:22.243088+00:00"
+    }
+  ]
+}

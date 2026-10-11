@@ -1,0 +1,67 @@
+[
+  {
+    "path": "/health",
+    "method": "GET",
+    "summary": "Health Check",
+    "operation_id": "health_check_health_get",
+    "parameters": [],
+    "request_body": null,
+    "responses": [
+      "200"
+    ]
+  },
+  {
+    "path": "/products",
+    "method": "GET",
+    "summary": "List Products",
+    "operation_id": "list_products_products_get",
+    "parameters": [],
+    "request_body": null,
+    "responses": [
+      "200"
+    ]
+  },
+  {
+    "path": "/products",
+    "method": "POST",
+    "summary": "Create Product",
+    "operation_id": "create_product_products_post",
+    "parameters": [],
+    "request_body": {
+      "content": {
+        "application/json": {
+          "schema": {
+            "$ref": "#/components/schemas/Product"
+          }
+        }
+      },
+      "required": true
+    },
+    "responses": [
+      "201",
+      "422"
+    ]
+  },
+  {
+    "path": "/products/{product_id}",
+    "method": "GET",
+    "summary": "Get Product",
+    "operation_id": "get_product_products__product_id__get",
+    "parameters": [
+      {
+        "name": "product_id",
+        "in": "path",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "title": "Product Id"
+        }
+      }
+    ],
+    "request_body": null,
+    "responses": [
+      "200",
+      "422"
+    ]
+  }
+]

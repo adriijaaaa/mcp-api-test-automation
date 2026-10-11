@@ -1,0 +1,9 @@
+
+fastapi
+uvicorn
+pytest
+requests
+pyyaml
+jsonschema
+httpx
+mcp<2
