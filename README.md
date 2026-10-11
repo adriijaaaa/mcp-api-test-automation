@@ -98,3 +98,9 @@ tests/        Additional tests
 - Expand API coverage
 - Improve test reporting and failure diagnostics
 - Add more configurable test scenarios
+
+## Architecture
+
+The framework combines OpenAPI-based endpoint discovery, rule-based API testing, AI-assisted test data generation using local Ollama, MCP tool integration, and consolidated test reporting.
+
+![MCP-Powered API Test Automation Architecture](docs/images/architecture.png)
