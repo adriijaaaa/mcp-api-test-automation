@@ -1,6 +1,7 @@
 
 import json
 from datetime import datetime, timezone
+from html import escape
 from pathlib import Path
 
 
@@ -11,6 +12,7 @@ REPORT_FILES = {
 }
 
 OUTPUT_FILE = Path("reports/consolidated_report.json")
+HTML_OUTPUT_FILE = Path("reports/consolidated_report.html")
 
 
 def load_report(suite_name, report_path):
@@ -74,7 +76,9 @@ def build_consolidated_report():
     failures = [
         {
             "suite": result["suite"],
-            "name": result.get("name", result.get("test_name", "Unnamed test")),
+            "name": result.get(
+                "name", result.get("test_name", "Unnamed test")
+            ),
             "expected_status": result.get("expected_status"),
             "actual_status": result.get("actual_status"),
             "error": result.get("error"),
@@ -109,6 +113,8 @@ def build_consolidated_report():
         encoding="utf-8",
     )
 
+    generate_html_report(consolidated)
+
     print("\nCONSOLIDATED API TEST REPORT")
     print("=" * 55)
 
@@ -141,9 +147,170 @@ def build_consolidated_report():
             if failure["error"]:
                 print(f"  Error: {failure['error']}")
 
-    print(f"\nSaved report: {OUTPUT_FILE}")
+    print(f"\nSaved JSON report: {OUTPUT_FILE}")
+    print(f"Saved HTML report: {HTML_OUTPUT_FILE}")
 
     return consolidated
+
+
+def generate_html_report(report):
+    """Generate a self-contained HTML dashboard from consolidated results."""
+
+    def safe(value):
+        return escape(str(value if value is not None else "—"))
+
+    status = report["overall_status"]
+    status_class = "pass" if status == "PASS" else "fail"
+
+    suite_rows = ""
+    for name, summary in report["suite_summaries"].items():
+        suite_rows += f"""
+        <tr>
+          <td>{safe(name)}</td>
+          <td>{summary['total']}</td>
+          <td>{summary['passed']}</td>
+          <td>{summary['failed']}</td>
+          <td>{summary['pass_rate_percent']}%</td>
+        </tr>
+        """
+
+    result_rows = ""
+    for result in report["results"]:
+        passed = result.get("passed") is True
+        result_status = "PASS" if passed else "FAIL"
+        result_class = "pass" if passed else "fail"
+        name = result.get(
+            "name", result.get("test_name", "Unnamed test")
+        )
+        checks = result.get("checks", [])
+        failed_checks = [
+            check.get("check", "Unknown check")
+            for check in checks
+            if not check.get("passed", False)
+        ]
+        details = result.get("error") or (
+            ", ".join(failed_checks) if failed_checks else "—"
+        )
+
+        result_rows += f"""
+        <tr>
+          <td>{safe(result['suite'])}</td>
+          <td>{safe(name)}</td>
+          <td><span class="badge {result_class}">
+            {result_status}</span></td>
+          <td>{safe(result.get('expected_status'))}</td>
+          <td>{safe(result.get('actual_status'))}</td>
+          <td>{safe(details)}</td>
+        </tr>
+        """
+
+    generated_at = safe(report.get("generated_at"))
+    pass_rate = report["pass_rate_percent"]
+
+    html = f"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>API Test Automation Report</title>
+<style>
+:root {{
+  color-scheme: light;
+  font-family: Arial, sans-serif;
+  background: #f4f7fb;
+  color: #172033;
+}}
+body {{ margin: 0; padding: 28px; }}
+main {{ max-width: 1200px; margin: auto; }}
+header, .card, section {{
+  background: white; border-radius: 14px;
+  padding: 22px; margin-bottom: 20px;
+  box-shadow: 0 3px 14px #1720330d;
+}}
+h1 {{ margin-top: 0; }}
+.muted {{ color: #64748b; font-size: 14px; }}
+.cards {{
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  gap: 14px; margin-bottom: 20px;
+}}
+.metric {{ font-size: 28px; font-weight: bold; margin-top: 8px; }}
+.pass {{ color: #137547; }}
+.fail {{ color: #b42318; }}
+.badge {{
+  display: inline-block; padding: 4px 9px;
+  border-radius: 20px; font-weight: bold; font-size: 12px;
+  background: #e8f7ef;
+}}
+.badge.fail {{ background: #fdecec; }}
+.progress {{
+  background: #e5eaf1; border-radius: 10px;
+  overflow: hidden; height: 12px; margin-top: 12px;
+}}
+.bar {{ height: 100%; background: #15945b; }}
+.table-wrap {{ overflow-x: auto; }}
+table {{ border-collapse: collapse; width: 100%; font-size: 14px; }}
+th, td {{
+  padding: 12px; border-bottom: 1px solid #e8edf3;
+  text-align: left; vertical-align: top;
+}}
+th {{ background: #f8fafc; }}
+td {{ overflow-wrap: anywhere; }}
+@media (max-width: 700px) {{
+  body {{ padding: 12px; }}
+  .cards {{ grid-template-columns: repeat(2, 1fr); }}
+}}
+</style>
+</head>
+<body>
+<main>
+<header>
+  <h1>API Test Automation Report</h1>
+  <p class="muted">Generated at {generated_at}</p>
+  <span class="badge {status_class}">Overall: {status}</span>
+  <div class="progress">
+    <div class="bar" style="width: {pass_rate}%"></div>
+  </div>
+  <p>{pass_rate}% pass rate</p>
+</header>
+
+<div class="cards">
+  <div class="card"><div class="muted">Total tests</div>
+    <div class="metric">{report['total']}</div></div>
+  <div class="card"><div class="muted">Passed</div>
+    <div class="metric pass">{report['passed']}</div></div>
+  <div class="card"><div class="muted">Failed</div>
+    <div class="metric fail">{report['failed']}</div></div>
+  <div class="card"><div class="muted">Test suites</div>
+    <div class="metric">{report['suite_count']}</div></div>
+</div>
+
+<section>
+<h2>Suite Summary</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Suite</th><th>Total</th><th>Passed</th>
+<th>Failed</th><th>Pass rate</th></tr></thead>
+<tbody>{suite_rows}</tbody>
+</table></div>
+</section>
+
+<section>
+<h2>Individual Test Results</h2>
+<div class="table-wrap"><table>
+<thead><tr><th>Suite</th><th>Test</th><th>Status</th>
+<th>Expected HTTP</th><th>Actual HTTP</th><th>Error / failed checks</th>
+</tr></thead>
+<tbody>{result_rows or '<tr><td colspan="6">No test results found.</td></tr>'}</tbody>
+</table></div>
+</section>
+<footer class="muted">
+  Generated by the MCP-Powered API Test Automation Framework.
+</footer>
+</main>
+</body>
+</html>
+"""
+
+    HTML_OUTPUT_FILE.write_text(html, encoding="utf-8")
 
 
 if __name__ == "__main__":
