@@ -27,5 +27,19 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Start FastAPI application
+        run: |
+          python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/uvicorn.log 2>&1 &
+          for attempt in {1..20}; do
+            if curl --fail http://127.0.0.1:8000/health; then
+              echo "API is ready."
+              exit 0
+            fi
+            sleep 1
+          done
+          echo "API failed to start. Server log:"
+          cat /tmp/uvicorn.log
+          exit 1
+
       - name: Run automated tests
         run: python -m pytest -v
