@@ -20,7 +20,6 @@ jobs:
         uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-          cache: pip
 
       - name: Install dependencies
         run: |
@@ -28,17 +27,31 @@ jobs:
           pip install -r requirements.txt
 
       - name: Start FastAPI application
+        shell: bash
         run: |
           python -m uvicorn app.main:app --host 127.0.0.1 --port 8000 > /tmp/uvicorn.log 2>&1 &
-          for attempt in {1..20}; do
-            if curl --fail http://127.0.0.1:8000/health; then
+          SERVER_PID=$!
+
+          for attempt in {1..30}; do
+            if curl --silent --show-error --fail http://127.0.0.1:8000/health; then
+              echo
               echo "API is ready."
               exit 0
             fi
+
+            if ! kill -0 "$SERVER_PID" 2>/dev/null; then
+              echo "API process exited unexpectedly."
+              cat /tmp/uvicorn.log
+              exit 1
+            fi
+
+            echo "Waiting for API (attempt $attempt/30)..."
             sleep 1
           done
-          echo "API failed to start. Server log:"
+
+          echo "API did not become ready in 30 seconds."
           cat /tmp/uvicorn.log
+          kill "$SERVER_PID" 2>/dev/null || true
           exit 1
 
       - name: Run automated tests
